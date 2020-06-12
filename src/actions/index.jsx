@@ -1,24 +1,26 @@
-import {URL_LIST,URL_SEARCH, URL_DETAIL, URL_PERSON, URL_CAST, URL_VIDEO, API_KEY, API_KEY_ALT} from '../const';
+import {URL_LIST,URL_SEARCH,   URL_SIMILAR,URL_DETAIL, URL_PERSON, URL_CAST, URL_VIDEO, API_KEY, API_KEY_ALT} from '../const';
 // action types
-export const SEARCH_MOVIE = 'SEARCH_MOVIE';
-export const SEARCH_MOVIE_SUCCESS = 'SEARCH_MOVIE_SUCCESS';
-export const SEARCH_MOVIE_FAILURE = 'SEARCH_MOVIE_FAILURE';
-export const FETCH_MOVIES = 'FETCH_MOVIES';
-export const FETCH_MOVIES_SUCCESS = 'FETCH_MOVIES_SUCCESS';
-export const FETCH_MOVIES_FAILURE = 'FETCH_MOVIES_FAILURE';
-export const RESET_MOVIES = 'RESET_MOVIES';
-export const FETCH_MOVIE = 'FETCH_MOVIE';
-export const FETCH_MOVIE_SUCCESS = 'FETCH_MOVIE_SUCCESS';
-export const FETCH_MOVIE_FAILURE = 'FETCH_MOVIE_FAILURE';
-export const FETCH_STAR_SUCCESS = 'FETCH_STAR_SUCCESS';
-export const FETCH_STAR_FAILURE = 'FETCH_STAR_FAILURE';
-export const FETCH_CASTS = 'FETCH_CASTS';
-export const FETCH_CASTS_SUCCESS = 'FETCH_CASTS_SUCCESS';
-export const FETCH_CASTS_FAILURE = 'FETCH_CASTS_FAILURE';
-export const FETCH_TRAILERS = 'FETCH_TRAILERS';
-export const FETCH_TRAILERS_SUCCESS = 'FETCH_TRAILERS_SUCCESS';
-export const FETCH_TRAILERS_FAILURE = 'FETCH_TRAILERS_FAILURE';
-
+export const SEARCH_MOVIE = "SEARCH_MOVIE";
+export const SEARCH_MOVIE_SUCCESS = "SEARCH_MOVIE_SUCCESS";
+export const SEARCH_MOVIE_FAILURE = "SEARCH_MOVIE_FAILURE";
+export const FETCH_MOVIES = "FETCH_MOVIES";
+export const FETCH_MOVIES_SUCCESS = "FETCH_MOVIES_SUCCESS";
+export const FETCH_MOVIES_FAILURE = "FETCH_MOVIES_FAILURE";
+export const RESET_MOVIES = "RESET_MOVIES";
+export const FETCH_MOVIE = "FETCH_MOVIE";
+export const FETCH_SIMILAR_MOVIES = "FETCH_SIMILAR_MOVIES";
+export const FETCH_SIMILAR_MOVIES_SUCCESS = "FETCH_SIMILAR_MOVIES_SUCCESS";
+export const FETCH_SIMILAR_MOVIES_FAILURE = "FETCH_SIMILAR_MOVIES_FAILURE";
+export const FETCH_MOVIE_SUCCESS = "FETCH_MOVIE_SUCCESS";
+export const FETCH_MOVIE_FAILURE = "FETCH_MOVIE_FAILURE";
+export const FETCH_STAR_SUCCESS = "FETCH_STAR_SUCCESS";
+export const FETCH_STAR_FAILURE = "FETCH_STAR_FAILURE";
+export const FETCH_CASTS = "FETCH_CASTS";
+export const FETCH_CASTS_SUCCESS = "FETCH_CASTS_SUCCESS";
+export const FETCH_CASTS_FAILURE = "FETCH_CASTS_FAILURE";
+export const FETCH_TRAILERS = "FETCH_TRAILERS";
+export const FETCH_TRAILERS_SUCCESS = "FETCH_TRAILERS_SUCCESS";
+export const FETCH_TRAILERS_FAILURE = "FETCH_TRAILERS_FAILURE";
 function searchMovie(searchText) {
   return {
     type: SEARCH_MOVIE,
@@ -134,6 +136,25 @@ function fetchTrailersFail(error) {
     error
   };
 }
+function fetchSimilarMovies() {
+  return {
+    type: FETCH_SIMILAR_MOVIES,
+  };
+}
+
+function fetchSimilarMoviesSuccess(data) {
+  return {
+    type: FETCH_SIMILAR_MOVIES_SUCCESS,
+    data,
+  };
+}
+
+function fetchSimilarMoviesFail(error) {
+  return {
+    type: FETCH_SIMILAR_MOVIES_FAILURE,
+    error,
+  };
+}
 
 export function searchMovieList(keyword){
   let url = URL_SEARCH + keyword + API_KEY_ALT;
@@ -209,4 +230,17 @@ export function fetchTrailerList(id){
         dispatch(fetchTrailersSuccess(youtubeTrailers));
       }).catch(error => dispatch(fetchTrailersFail(error)))
   }
+}
+export function fetchSimilarMoviess(id) {
+  const url_movie = URL_DETAIL + id + URL_SIMILAR + API_KEY;
+  console.log(url_movie);
+  return function (dispatch) {
+    dispatch(fetchSimilarMovies());
+    return fetch(url_movie).then((response) => response.json())
+      .then((data) => {
+        dispatch(fetchSimilarMoviesSuccess(data));
+        console.log(data);
+      })
+      .catch((error) => dispatch(fetchSimilarMoviesFail(error)));
+  };
 }

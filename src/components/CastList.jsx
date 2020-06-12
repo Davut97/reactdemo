@@ -1,7 +1,7 @@
 import React from 'react';
 import Cast from './Cast';
 import {Link} from 'react-router';
-import { Col } from 'react-bootstrap';
+import { Col,Row } from 'react-bootstrap';
 import styled from 'styled-components';
 
 export default function CastList({data}) {
@@ -25,7 +25,9 @@ export default function CastList({data}) {
     return(
       <div>
         <h3>Casts</h3>
+        <Row>
         {casts}
+        </Row>
       </div>
     );
 }

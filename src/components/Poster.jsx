@@ -1,5 +1,5 @@
 import React from 'react';
-import { URL_IMG, IMG_SIZE_LARGE } from '../const'
+import { URL_IMG, IMG_SIZE_SMALL } from '../const'
 import { Image } from 'react-bootstrap'
 import styled from 'styled-components'
 import { Glyphicon } from 'react-bootstrap'
@@ -23,8 +23,8 @@ export default function Poster(props){
       opacity:0;
   `;
   return(
-    <StyledImg>
-      <Image className="image" key={props.id} src={URL_IMG+IMG_SIZE_LARGE+props.path} responsive />
+    <StyledImg style={{marginBottom:"10px"}}>
+      <Image className="image" key={props.id} src={URL_IMG+IMG_SIZE_SMALL+props.path} responsive />
       {props.info &&
       <Info className="title">
         <h4>{props.title}</h4>
